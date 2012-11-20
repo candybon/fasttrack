@@ -14,7 +14,6 @@
  */
 package com.chen.candybon.fasttrack.object;
 
-import com.chen.candybon.fasttrack.object.KeyedId;
 import com.chen.candybon.fasttrack.dao.SmallTestMe;
 import org.junit.Test;
 

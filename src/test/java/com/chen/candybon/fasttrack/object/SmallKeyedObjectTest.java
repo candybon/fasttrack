@@ -14,8 +14,6 @@
  */
 package com.chen.candybon.fasttrack.object;
 
-import com.chen.candybon.fasttrack.object.KeyedId;
-import com.chen.candybon.fasttrack.object.SmallKeyedObject;
 import com.chen.candybon.fasttrack.exception.DataClassException;
 import com.chen.candybon.fasttrack.exception.InvalidKeyException;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;

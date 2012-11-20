@@ -14,7 +14,6 @@
  */
 package com.chen.candybon.fasttrack.dao;
 
-import com.chen.candybon.fasttrack.dao.KeyedObjectDao;
 import com.chen.candybon.fasttrack.PredicateBuilder;
 import com.chen.candybon.fasttrack.exception.DataClassException;
 import com.chen.candybon.fasttrack.exception.DataException;

@@ -14,8 +14,6 @@
  */
 package com.chen.candybon.fasttrack.dao;
 
-import com.chen.candybon.fasttrack.dao.KeyedObjectDao;
-import com.chen.candybon.fasttrack.dao.KoFastTrackDataService;
 import com.chen.candybon.fasttrack.FastTrackDataService;
 import com.chen.candybon.fasttrack.Predicate;
 import com.chen.candybon.fasttrack.PredicateBuilder;

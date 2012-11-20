@@ -14,8 +14,6 @@
  */
 package com.chen.candybon.fasttrack.object;
 
-import com.chen.candybon.fasttrack.object.LargeKeyedObject;
-import com.chen.candybon.fasttrack.object.KeyedId;
 import com.chen.candybon.fasttrack.exception.DataClassException;
 import com.chen.candybon.fasttrack.exception.InvalidKeyException;
 import org.junit.Test;

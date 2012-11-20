@@ -14,7 +14,6 @@
  */
 package com.chen.candybon.fasttrack.dao;
 
-import com.chen.candybon.fasttrack.dao.JPQLPredicate;
 import com.chen.candybon.fasttrack.exception.InvalidPredicateException;
 import org.junit.Test;
 
