@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+
+    <persistence-unit name="unit_test" transaction-type="RESOURCE_LOCAL">
+        <provider>
+            org.hibernate.ejb.HibernatePersistence
+        </provider>
+        <!-- We must enumerate each entity in the persistence unit -->
+        <class>com.chen.candybon.fasttrack.object.KeyedId</class>
+        <class>com.chen.candybon.fasttrack.object.LargeKeyedObject</class>
+        <class>com.chen.candybon.fasttrack.object.KeyedObject</class>
+        <class>com.chen.candybon.fasttrack.object.SmallKeyedObject</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+
+            <property name="hibernate.connection.driver_class"
+                      value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username"
+                      value="fasttrack_user"/>
+            <property name="jhibernate.connection.password"
+                      value=""/>
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.connection.pool_size" value="10" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://127.0.0.1:3306/fasttrack_db" />
+        </properties>
+        
+    </persistence-unit>
+
+</persistence>

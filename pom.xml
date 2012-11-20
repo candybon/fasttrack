@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <groupId>com.chen.candybon</groupId>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fasttrack</artifactId>
+    <version>2.7-x-SNAPSHOT</version>
+    <name>Fast track service API</name>
+    <packaging>ejb</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <configuration>
+                    <ejbVersion>3.0</ejbVersion>
+                    <generateClient>true</generateClient>
+                    <archive>
+                        <manifest>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                    </archive>
+                    <clientExcludes>
+                        <clientExclude>com/**/*Impl.class</clientExclude>
+                        <clientExclude>**/persistence.xml</clientExclude>
+                        <clientExclude>**/*.keep</clientExclude>
+                        <clientExclude>**/*.contrib</clientExclude>
+                        <clientExclude>./pom.*</clientExclude>
+                        <clientExclude>
+                            com/chen/candybon/fasttrack/dao/*
+                        </clientExclude>
+                        <clientExclude>
+                            com/chen/candybon/fasttrack/object/*
+                        </clientExclude>
+                    </clientExcludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <!-- Cleanup -->
+                                <delete file="./*.sql"/>
+                                <delete file="./../../../db/generatedFastTrackCreateIndexes.sql"/>
+
+                                <!-- Table creation -->
+                                <concat destfile="./../../../db/generatedFastTrackCreateIndexes.sql">
+                                    <!--<footer filtering="no" trimleading="yes" file="./src/main/sql/createIndexes.sql"/>-->
+                                    <!--<path path="./target/hibernate3/sql/create.sql"/>-->
+                                    <path path="./src/main/sql/createIndexes.sql"/>
+                                </concat>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <components>
+                        <component>
+                            <name>hbm2ddl</name>
+                            <implementation>jpaconfiguration</implementation>
+                        </component>
+                    </components>
+                    <componentProperties>
+                        <persistenceunit>keyservice</persistenceunit>
+                        <outputfilename>create.sql</outputfilename>
+                        <create>true</create>
+                        <export>false</export>
+                        <format>true</format>
+                    </componentProperties>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enhancer</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>test</scope>
+            <version>5.1.6</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.6.6</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.3.2.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.4.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>3.3.0.ga</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.4.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- HSQLDB for running tests -->
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+           <groupId>junit</groupId>
+           <artifactId>junit</artifactId>
+           <version>4.4</version>
+           <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
