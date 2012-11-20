@@ -4,7 +4,7 @@
     <groupId>com.chen.candybon</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>fasttrack</artifactId>
-    <version>2.7-x-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Fast track service API</name>
     <packaging>ejb</packaging>
 
