@@ -147,6 +147,141 @@ The first condition for PredicateBuilder should be AND. (Future improvement)
 
 There are maximum 6 indexes that you can specify for the instance to be handled by this library (enough for most of the application)
 
+##API
+You can browse more information in the source code, but you have take a look at bellow for a galance
 
+	/**
+     * Used to insert some data in the database. Think of this as a {@link java.util.Map#put}
+     *
+     * Associates the specified {@link T} instance with the specified key.  If the data store previously contained
+     * an identical {@link T} instance of the same type and key, then the insertion will fail with an exception.
+     *
+     * @param key key with which the specified data instance is to be associated
+     *
+     * @param data An class instance (object) that implements either
+     * {@link com.chen.candybon.fasttrack.data.SmallData} or {@link com.chen.candybon.fasttrack.data.LargeData} to
+     * be associated with the specified key. Fields annotated as
+     * Searchable{@link com.chen.candybon.fasttrack.Searchable} will be used as index for search function.
+     *
+     * @param indexes String var arg (similar to a String[]) that can be used to specify one(1) to six(6) indexes to
+     * create for this object.
+     * Note: if you specify these parameters, all fields annotated
+     * as Searchable{@link com.chen.candybon.fasttrack.Searchable} will be ignored, and not to be stored as indexes.
+     * Otherwise, if you did not specify any string variables as parameter, the fields annotated as
+     * Searchable{@link com.chen.candybon.fasttrack.Searchable} will be used as indexes instead.
+     *
+     * @return True if the insertion is successful, false if not.
+     *
+     * @throws FastTrackException In case of an
+     * invalid key {@link com.chen.candybon.fasttrack.exception.InvalidKeyException},
+     * invalid class type {@link com.chen.candybon.fasttrack.exception.DataClassException}
+     * or anything wrong with data {@link com.chen.candybon.fasttrack.exception.DataException}
+     */
+    <T> boolean put(String key, T data, String... indexes) throws FastTrackException;
+
+    /**
+     * Used to find data from the database by using key. Think of this as a {@link java.util.Map#remove}
+     *
+     * Get the instance of {@link T} with the specified key.
+     *
+     * @param tClass An class that implements either {@link com.chen.candybon.fasttrack.data.SmallData}
+     * or {@link com.chen.candybon.fasttrack.data.LargeData} to be associated with the specified key.
+     *
+     * @param key key with which the specified data instance is to be associated
+     *
+     * @return The persisted object. Null if not found.
+     *
+     * @throws FastTrackException In case of an invalid key
+     * {@link com.chen.candybon.fasttrack.exception.InvalidKeyException},
+     * in case of an invalid class {@link com.chen.candybon.fasttrack.exception.DataClassException},
+     * or if anything else goes wrong, eg. De-serialization
+     * {@link com.chen.candybon.fasttrack.exception.DataException}.
+     * 
+     */
+    <T> T get(Class<T> tClass, String key) throws FastTrackException;
+
+    /**
+     * Removes the data for this key from this database if it is present. Think of this as a {@link java.util.Map#get}
+     *
+     * @param tClass An class that implements either {@link com.chen.candybon.fasttrack.data.SmallData}
+     * or {@link com.chen.candybon.fasttrack.data.LargeData} to be associated with the specified key.
+     *
+     * @param key key with which the specified data instance is to be associated
+     *
+     * @throws FastTrackException In case of an
+     * invalid key {@link com.chen.candybon.fasttrack.exception.InvalidKeyException},
+     * or in case of an invalid class {@link com.chen.candybon.fasttrack.exception.DataClassException}.
+     */
+    <T> void delete(Class<T> tClass, String key) throws FastTrackException;
+
+    /**
+     * Update the data for this key from this database if it is present. If not present in db,
+     * it throws NotFoundException {@link com.chen.candybon.fasttrack.exception.NotFoundException}.
+     * It is important to specify the indexes to use for this object, as the indexes will also be updated.
+     *
+     * @param key key with which the specified data instance is to be associated
+     *
+     * @param data An class instance (object) that implements either
+     * {@link com.chen.candybon.fasttrack.data.SmallData} or {@link com.chen.candybon.fasttrack.data.LargeData} to
+     * be associated with the specified key. Fields annotated as
+     * Searchable{@link com.chen.candybon.fasttrack.Searchable} will be used as index for search function.
+     *
+     * @param indexes String var arg (similar to a String[]) that can be used to specify one(1) to six(6) indexes to
+     * create for this object.
+     * Note: if you specify these parameters, all fields annotated
+     * as Searchable{@link com.chen.candybon.fasttrack.Searchable} will be ignored, and not to be stored as indexes.
+     * Otherwise, if you did not specify any string variables as parameter, the fields annotated as
+     * Searchable{@link com.chen.candybon.fasttrack.Searchable} will be used as indexes instead.
+     *
+     * @return True if the insertion is successful, false if not.
+     *
+     * @throws FastTrackException In case of an
+     * invalid key {@link com.chen.candybon.fasttrack.exception.InvalidKeyException},
+     * in case of an invalid class {@link com.chen.candybon.fasttrack.exception.DataClassException},
+     * or Object not found {@link com.chen.candybon.fasttrack.exception.NotFoundException},
+     * or if anything goes wrong, eg. Serialization {@link com.chen.candybon.fasttrack.exception.DataException}.
+
+     */
+    <T> boolean update(String key, T data, String... indexes)
+            throws FastTrackException;
+
+    /**
+     * Search for the data of the specified Class, which satisfy the Criteria specified in QueryBuilder. The result is
+     * a collection of a maximum number (default is 20) of records. The paging information can also be specified in
+     * QueryBuilder to specify different result sets.
+     *
+     * @param tClass An class that implements either {@link com.chen.candybon.fasttrack.data.SmallData}
+     * or {@link com.chen.candybon.fasttrack.data.LargeData} to be associated with the specified key.
+     *
+     * @param predicate Define a set of conditions that the elements of the response have in common,
+     * which specify the criteria that should be satisfied in search. e.g. indexes combination, maximum number
+     * of record per result set, starting position of the result.
+     *
+     * @return The a maximum number (default is 20) of result set according to QueryBuilder
+     *
+     * @throws FastTrackException In case of an
+     * class {@link com.chen.candybon.fasttrack.exception.DataClassException},
+     * bad queryStatement {@link com.chen.candybon.fasttrack.exception.InvalidPredicateException}
+     * or if anything goes wrong, eg. Serialization {@link com.chen.candybon.fasttrack.exception.DataException}.
+     */
+    <T> List<T> find(Class<T> tClass, Predicate predicate)
+            throws FastTrackException;
+
+    /**
+     * Search for the a maximum number of {@link T} data from a specific position.
+     *
+     * @param tClass An class that implements either {@link com.chen.candybon.fasttrack.data.SmallData}
+     * or {@link com.chen.candybon.fasttrack.data.LargeData} to be associated with the specified key.
+     * @param startingPosition Starting position.
+     *
+     * @param max Max number of results.
+     *
+     * @return A {@link List} of T with a maximum size of max.
+     *
+     * @throws FastTrackException In case of an
+     * class {@link com.chen.candybon.fasttrack.exception.DataClassException},
+     * or if anything goes wrong, eg. Serialization {@link com.chen.candybon.fasttrack.exception.DataException}.
+     */
+    <T> List<T> find(Class<T> tClass, int startingPosition, int max) throws FastTrackException;
 
 
